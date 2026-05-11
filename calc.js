@@ -45,8 +45,6 @@ let operator;
 let calcStep = 'start';
 
 buttons.addEventListener('click', function (event) {
-    console.log(event.target.className);
-    console.log(event.target.id);
     switch(event.target.className) {
         case 'number':
             if (event.target.id == 'decimal') {
@@ -102,6 +100,5 @@ buttons.addEventListener('click', function (event) {
             }
             
     }
-    console.log(calcStep);
-    //console.log('num1: ' + number1 + '; op: ' + operator + '; num2: ' + number2);
+
 })
