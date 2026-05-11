@@ -25,14 +25,20 @@ function operate(operator, num1, num2) {
         case 'x':
             return multiply(num1,num2);
         case '/':
-            return divide(num1,num2);
+            if (num2 == 0) {return 'ERROR'}
+            let result = divide(num1,num2);
+            if (result.toString().length > 14) {
+                console.log(result.toString().slice(0,15))
+                return result.toString().slice(0,15);
+            }
+            return result;
     }
 }
 
 // Global variables
 let display = document.querySelector("#display");
 let buttons = document.querySelector("#buttons");
-let number1;
+let number1 = 0;
 let number2;
 let operator;
 let calcStep = 'start';
@@ -52,13 +58,13 @@ buttons.addEventListener('click', function (event) {
             }
             break;
         case 'operator':
-            if (calcStep == 'num1' || calcStep == 'op') {
-                number1 = parseInt(display.textContent);
+            if (calcStep == 'num1' || calcStep == 'op' || calcStep == 'start') {
+                number1 = parseFloat(display.textContent);
                 operator = event.target.textContent;
                 console.log(number1);
                 console.log(operator);
             } else {
-                number2 = parseInt(display.textContent);
+                number2 = parseFloat(display.textContent);
                 number1 = operate(operator, number1, number2);
                 display.textContent = number1;
                 operator = event.target.textContent;
@@ -67,7 +73,7 @@ buttons.addEventListener('click', function (event) {
             break;
         case 'equal':
             if (calcStep == 'num2') {
-                number2 = parseInt(display.textContent);
+                number2 = parseFloat(display.textContent);
                 display.textContent = operate(operator,number1,number2);
                 operator = '';
                 number1 = parseInt(display.textContent);
@@ -80,7 +86,7 @@ buttons.addEventListener('click', function (event) {
             number1 = 0;
             number2 = 0;
             operator = '';
-            display.textContent = '';
+            display.textContent = '0';
     }
     console.log(calcStep);
     //console.log('num1: ' + number1 + '; op: ' + operator + '; num2: ' + number2);
