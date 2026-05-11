@@ -38,6 +38,7 @@ function operate(operator, num1, num2) {
 // Global variables
 let display = document.querySelector("#display");
 let buttons = document.querySelector("#buttons");
+let dot = document.querySelector('#decimal');
 let number1 = 0;
 let number2;
 let operator;
@@ -45,8 +46,12 @@ let calcStep = 'start';
 
 buttons.addEventListener('click', function (event) {
     console.log(event.target.className);
+    console.log(event.target.id);
     switch(event.target.className) {
         case 'number':
+            if (event.target.id == 'decimal') {
+                dot.disabled = true;
+            }
             if (calcStep == 'num1' || calcStep == 'num2') {
                 display.textContent += event.target.textContent;
             } else if (calcStep == 'start') {
@@ -61,14 +66,13 @@ buttons.addEventListener('click', function (event) {
             if (calcStep == 'num1' || calcStep == 'op' || calcStep == 'start') {
                 number1 = parseFloat(display.textContent);
                 operator = event.target.textContent;
-                console.log(number1);
-                console.log(operator);
             } else {
                 number2 = parseFloat(display.textContent);
                 number1 = operate(operator, number1, number2);
                 display.textContent = number1;
                 operator = event.target.textContent;
             }
+            dot.disabled = false;
             calcStep = 'op';
             break;
         case 'equal':
@@ -78,15 +82,25 @@ buttons.addEventListener('click', function (event) {
                 operator = '';
                 number1 = parseInt(display.textContent);
                 number2 = null;
+                dot.disabled = false;
                 calcStep = 'start';
             }
             break;
         case 'clear':
-            calcStep = 'start';
-            number1 = 0;
-            number2 = 0;
-            operator = '';
-            display.textContent = '0';
+            if (event.target.id == 'delete') {
+                if (display.textContent.slice(-1) == '.') {
+                    dot.disabled = false;
+                }
+                display.textContent = display.textContent.slice(0,-1);
+            } else {
+                calcStep = 'start';
+                dot.disabled = false;
+                number1 = 0;
+                number2 = 0;
+                operator = '';
+                display.textContent = '0';
+            }
+            
     }
     console.log(calcStep);
     //console.log('num1: ' + number1 + '; op: ' + operator + '; num2: ' + number2);
